@@ -1,0 +1,87 @@
+import zipfile
+import os
+import pandas as pd
+
+with zipfile.ZipFile('C:/Users/username/Downloads/c.zip', 'r') as zip_ref:
+    zip_ref.extractall('C:/Users/username/Downloads/extracted/')
+directory = 'C:/Users/username/Downloads/extracted/'
+directories = os.listdir(directory)
+#print(directories)
+file_path = os.listdir(directory+'//')
+#print(file_path)
+for file in file_path:
+    search_file = 'http.log'
+    x = search_file
+    print(x)
+dfs=[]
+for i in range(len(directories)):
+    colnames= ['ts','uid','id.orig_h','id.orig_p','id.resp_h','id.resp_p','trans_depth','method','host','uri','referrer','user_agent','request_body_len','response_body_len','status_code','status_msg','info_code','info_msg','filename','tags','username','password','proxied','orig_fuids','orig_mime_types','resp_fuids','resp_mime_types']
+    df= pd.read_csv("C:/Users/ysayeed1/Downloads/extracted/"+directories[i]+"/http.log",sep="\t",lineterminator="\n",names=colnames,header=8, encoding="utf-8")
+    df.drop(df.tail(1).index,inplace=True)
+    dfs.append(df)
+    big_frame = pd.concat(dfs, ignore_index=True)
+    #print(df)
+    print(big_frame)
+    
+big_frame[big_frame.loc[:,'user_agent'].str.contains("Mozilla")]
+big_frame.loc[:,['id.orig_h','id.resp_h']].drop_duplicates()
+big_frame.loc[:,['id.orig_h','id.resp_h','id.orig_p','id.resp_p']].drop_duplicates()
+big_frame[big_frame.loc[:,'host'].str.contains("amazon",na=False)]
+
+import re
+total_host = big_frame.loc[:,'host'].drop_duplicates()
+print(total_host)
+
+big_frame.loc[:,'host'].str.match("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^0-9])
+unknown_host = big_frame.loc[:, 'host'].str.contains(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
+print( unknown_host)
+
+l1=big_frame[big_frame.loc[:,'host'].str.contains("sharq1",na=False)]
+l2=big_frame[big_frame.loc[:,'host'].str.contains("linguaflair",na=False)]
+output_merged = pd.concat([l1, l2], ignore_index=True, sort=True)
+output_merged.loc[:,'host']
+print(l1)
+print(l2)
+big_frame[big_frame.loc[:,'host'].str.contains("google",na=False)]
+
+import matplotlib as plt
+import seaborn as sns
+from flask import Flask
+sns.set(rc={'figure.figsize':(15,5)})
+gvisit=sns.countplot(x='host',data=google_visit)
+gvisit.set_xticklabels(gvisit.get_xticklabels(),rotation=90)
+sns.scatterplot(x='ts',y='host',data=df)  
+print (gvisit)
+gvisit.figure.savefig("google_visit_count_plot_1.pdf")
+
+
+import matplotlib as plt
+import seaborn as sns
+from flask import Flask
+sns.displot(df['ts'])
+a=sns.pairplot(df,hue='host',height=5);
+sns.scatterplot(x='ts',y='host',data=df)  
+print(a)
+a.figure.savefig("pair_plot.pdf")
+
+ax=sns.countplot(x='host',data=df)
+ax.set_xticklabels(ax.get_xticklabels(),rotation=90)
+sns.scatterplot(x='ts',y='host',data=df)  
+print (ax)
+ax.figure.savefig("count_plot_1.pdf")
+
+from flask import Flask, send_file
+app = Flask(__name__)
+
+@app.route('/analytics')
+def open_pdf():
+    # Path to the PDF file
+    pdf_path = 'C:/Users/username/pair_plot.pdf'
+      
+
+    # Return the PDF file as a Flask response
+    return send_file(pdf_path, mimetype='application/pdf')
+    
+    
+if __name__ == '__main__':
+    app.run()
