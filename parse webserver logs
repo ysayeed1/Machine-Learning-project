@@ -1,0 +1,27 @@
+import zipfile
+import os
+import pandas as pd
+
+with zipfile.ZipFile('C:/Users/ysayeed1/Downloads/c.zip', 'r') as zip_ref:
+    zip_ref.extractall('C:/Users/ysayeed1/Downloads/extracted/')
+directory = 'C:/Users/ysayeed1/Downloads/extracted/'
+# search for a specific file in the extracted directory
+#search_file = 'http_1.log'
+directories = os.listdir(directory)
+#print(directories)
+file_path = os.listdir(directory+'//')
+#print(file_path)
+for file in file_path:
+    search_file = 'http.log'
+    x = search_file
+    print(x)
+dfs=[]
+for i in range(len(directories)):
+    colnames= ['ts','uid','id.orig_h','id.orig_p','id.resp_h','id.resp_p','trans_depth','method','host','uri','referrer','user_agent','request_body_len','response_body_len','status_code','status_msg','info_code','info_msg','filename','tags','username','password','proxied','orig_fuids','orig_mime_types','resp_fuids','resp_mime_types']
+    df= pd.read_csv("C:/Users/ysayeed1/Downloads/extracted/"+directories[i]+"/http.log",sep="\t",lineterminator="\n",names=colnames,header=8, encoding="utf-8")
+    df.drop(df.tail(1).index,inplace=True)
+    dfs.append(df)
+    big_frame = pd.concat(dfs, ignore_index=True)
+    #print(df)
+    print(big_frame)
+    
