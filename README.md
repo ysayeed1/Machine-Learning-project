@@ -1,6 +1,10 @@
-1. Parse the http.log file in each folder.
-2. line by line. You will have to ignore some rows on the top.
-2a. Create a data frame of all the cleaned required data. 
+**This machine learning project extracts the archived webserver logs from the windows logger server and converts it into clean structured dataframes leveraging pandas python library to perform malicious network traffic analysis tracking down the indicators of attacks/compromise which includes dns analysis, bad IP's, weird port connections
+user behaviour analysis, restricted hosts, user agents etc. The results are produced in a visualized analytics form using matplotlib and seaborn libraries for presenting it to the stakeholders and end clients. Lastly, it creates a REST API service to produce the meaningful analytical results based on the network traffic analysis performed. This automation piece can be extended other types of logs such as zeek, suricata etc. with some minor tweaks. The aim of this project is to detect the anomalies from the logs to hunt and track the threat actors to decrease the dwell time of the cybersecurity incident.
+**
+The steps are broken down as follows with sample hosts, user agents, IP addresses, ports and domain names:
+
+1. Parse the http.log file in each folder line by line. You will have to ignore some rows on the top.
+2. Create a data frame of all the cleaned required data. 
 3. See how many of the Destination Computers have Mozilla Requests (Mozilla/4.0) and for Opera/9 for each folder.
 4. Each unique ip is a request. unique source and unique destination pair. Output that in
 formation on the screen. Make it so the IP entry is configurable.
