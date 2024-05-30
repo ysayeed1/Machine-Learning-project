@@ -2,11 +2,9 @@ import zipfile
 import os
 import pandas as pd
 
-with zipfile.ZipFile('C:/Users/ysayeed1/Downloads/c.zip', 'r') as zip_ref:
-    zip_ref.extractall('C:/Users/ysayeed1/Downloads/extracted/')
-directory = 'C:/Users/ysayeed1/Downloads/extracted/'
-# search for a specific file in the extracted directory
-#search_file = 'http_1.log'
+with zipfile.ZipFile('C:/Users/username/Downloads/c.zip', 'r') as zip_ref:
+    zip_ref.extractall('C:/Users/username/Downloads/extracted/')
+directory = 'C:/Users/username/Downloads/extracted/'
 directories = os.listdir(directory)
 #print(directories)
 file_path = os.listdir(directory+'//')
